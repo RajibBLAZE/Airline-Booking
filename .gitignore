@@ -1,0 +1,84 @@
+# === Angular (frontend) ===
+frontend/.angular/
+frontend/dist/
+frontend/tmp/
+frontend/out-tsc/
+frontend/bazel-out/
+
+# Node
+frontend/node_modules/
+frontend/npm-debug.log
+frontend/yarn-error.log
+
+# IDEs and editors
+frontend/.idea/
+frontend/.project
+frontend/.classpath
+frontend/.c9/
+frontend/*.launch
+frontend/.settings/
+frontend/*.sublime-workspace
+
+# VSCode
+frontend/.vscode/*
+!frontend/.vscode/settings.json
+!frontend/.vscode/tasks.json
+!frontend/.vscode/launch.json
+!frontend/.vscode/extensions.json
+frontend/.history/
+
+# Misc
+frontend/.angular/cache/
+frontend/.sass-cache/
+frontend/connect.lock
+frontend/coverage/
+frontend/libpeerconnection.log
+frontend/testem.log
+frontend/typings/
+
+# System
+frontend/.DS_Store
+
+
+
+# === Node.js (backend) ===
+
+# Node modules
+backend/node_modules/
+
+# Logs
+backend/logs/
+backend/*.log
+backend/npm-debug.log*
+backend/yarn-debug.log*
+backend/yarn-error.log*
+
+# Runtime
+backend/pids/
+backend/*.pid
+backend/*.seed
+backend/*.pid.lock
+
+# Environment variables
+backend/.env
+backend/.env.local
+backend/.env.*.local
+
+# Database dumps
+backend/*.sqlite
+backend/*.sqlite3
+backend/*.db
+backend/*.sql
+
+# Coverage
+backend/coverage/
+backend/.nyc_output/
+
+# OS-specific
+backend/ehthumbs.db
+backend/Icon?
+backend/desktop.ini
+
+# Redis dump files (optional)
+backend/dump.rdb
+backend/appendonly.aof
