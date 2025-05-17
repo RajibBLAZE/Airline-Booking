@@ -45,7 +45,7 @@ async function searchFlights(req, res) {
             query += ' AND f.airline = ?';
             params.push(airline);
         }
-        if (minPrice && maxPrice) {
+        if (minPrice != null && maxPrice != null){
             query += ' AND f.price BETWEEN ? AND ?';
             params.push(minPrice, maxPrice);
         }

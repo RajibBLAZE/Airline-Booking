@@ -1,0 +1,98 @@
+<form [formGroup]="form" (ngSubmit)="onSearch()">
+  <label for="from">From</label>
+  <select formControlName="from" id="from">
+    <option value="">Select city</option>
+    <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
+  </select>
+  <div *ngIf="submitted && form.get('from')?.hasError('required')" class="error">
+    From is required
+  </div>
+
+  <label for="to">To</label>
+  <select formControlName="to" id="to">
+    <option value="">Select city</option>
+    <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
+  </select>
+  <div *ngIf="submitted && form.get('to')?.hasError('required')" class="error">
+    To is required
+  </div>
+
+  <label for="date">Departure Date</label>
+  <input type="date" formControlName="date" id="date" />
+  <div *ngIf="submitted && form.get('date')?.hasError('required')" class="error">
+    Date is required
+  </div>
+
+  <label for="classType">Class</label>
+  <select formControlName="classType" id="classType">
+    <option value="economy">Economy</option>
+    <option value="premium">Premium</option>
+    <option value="business">Business</option>
+  </select>
+
+  <label for="passengers">Passengers</label>
+  <input type="number" formControlName="passengers" id="passengers" min="1" />
+  <div *ngIf="submitted && form.get('passengers')?.hasError('min')" class="error">
+    Minimum 1 passenger
+  </div>
+  <div *ngIf="submitted && form.get('passengers')?.hasError('required')" class="error">
+    Passengers is required
+  </div>
+
+  <h3>Select Fare Type</h3>
+  <div class="fare-options">
+    <label><input type="radio" formControlName="fareType" value="regular" /> Regular</label>
+    <label><input type="radio" formControlName="fareType" value="student" /> Student</label>
+    <label><input type="radio" formControlName="fareType" value="senior" /> Senior Citizen</label>
+    <label><input type="radio" formControlName="fareType" value="govt" /> Government</label>
+  </div>
+
+  <h3>Filter By Airline</h3>
+  <select formControlName="airline">
+    <option value="">-- Any --</option>
+    <option value="IndiGo">IndiGo</option>
+    <option value="Air India">Air India</option>
+    <option value="Akasa Air">Akasa Air</option>
+  </select>
+
+  <h3>Departure Time</h3>
+  <select formControlName="timeSlot">
+    <option value="">-- Any --</option>
+    <option value="morning">Morning (6AM - 12PM)</option>
+    <option value="afternoon">Afternoon (12PM - 6PM)</option>
+    <option value="evening">Evening (6PM - 12AM)</option>
+  </select>
+
+  <h3>Price Range (₹)</h3>
+  <div class="price-range">
+    <input type="number" formControlName="minPrice" placeholder="Min" />
+    <input type="number" formControlName="maxPrice" placeholder="Max" />
+  </div>
+
+  <button type="submit">Search Flights</button>
+</form>
+
+<!-- Display Flights -->
+<div *ngIf="flights.length > 0">
+  <h3>Available Flights</h3>
+  <div *ngFor="let flight of flights" class="flight">
+    <p>
+      <strong>{{ flight.airline }}</strong> |
+      From: {{ flight.from_city }} ({{ flight.from_city_id }}) - 
+      To: {{ flight.to_city }} ({{ flight.to_city_id }}) |
+      ₹{{ flight.price }} |
+      Departure: {{ flight.departure_time }} |
+      Arrival: {{ flight.arrival_time }} |
+      Duration: {{ flight.duration }} |
+      Class: {{ flight.class }} |
+      Fare Type: {{ flight.fare_type }} |
+      Date: {{ flight.date | date:'mediumDate' }}
+    </p>
+    <button (click)="bookFlight(flight.id)">Book</button>
+  </div>
+</div>
+
+<!-- No flights found -->
+<div *ngIf="flights.length === 0 && submitted">
+  <p>No flights found matching your criteria.</p>
+</div>
