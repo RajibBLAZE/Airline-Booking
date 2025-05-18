@@ -13,6 +13,7 @@ export class SearchFlightsComponent implements OnInit {
   form: FormGroup;
   submitted = false;
   flights: any[] = [];
+  showFilters: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -47,13 +48,14 @@ export class SearchFlightsComponent implements OnInit {
       .post<any[]>('http://localhost:3005/api/flight/search', this.form.value)
       .subscribe((res) => {
         this.flights = res;
+        this.showFilters = true; 
       });
   }
 
   bookFlight(flight: any) {
     const passengers = this.form.value.passengers;
     const body = {
-      user_id: "222",
+      user_id: '222',
       flight_id: flight.id,
       passengers: passengers,
       travel_class: this.form.value.classType,
