@@ -7,11 +7,19 @@ import { SearchFlightsComponent } from './flight/search-flights/search-flights.c
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
+import { VerifyEmailComponent } from './auth/verify-email/verify-email.component';
+
+import { AuthComponent } from './auth/auth/auth.component';
+import { NavBarComponent } from './nav/nav-bar/nav-bar.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    SearchFlightsComponent
+    SearchFlightsComponent,
+    VerifyEmailComponent,
+    AuthComponent,
+    NavBarComponent
   ],
   imports: [
     BrowserModule,

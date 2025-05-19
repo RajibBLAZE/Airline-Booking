@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-search-flights',
@@ -14,11 +15,15 @@ export class SearchFlightsComponent implements OnInit {
   submitted = false;
   flights: any[] = [];
   showFilters: boolean = false;
+  showSuccessGif: boolean = true;
+  loading: boolean = false;
+
 
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     this.form = this.fb.group({
       from: ['', Validators.required],
@@ -35,6 +40,7 @@ export class SearchFlightsComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this.http
       .get<any[]>('http://localhost:3005/api/flight/cities')
       .subscribe((data) => (this.cities = data));
@@ -48,14 +54,25 @@ export class SearchFlightsComponent implements OnInit {
       .post<any[]>('http://localhost:3005/api/flight/search', this.form.value)
       .subscribe((res) => {
         this.flights = res;
-        this.showFilters = true; 
+        this.showFilters = true;
       });
   }
 
   bookFlight(flight: any) {
+  const token = this.authService.getToken();
+  if (token) {
+    const userId = this.authService.getUserIdFromToken();
+
+    if (!userId) {
+      alert('You must be logged in to book a flight.');
+      return;
+    }
+
+    this.loading = true; // Show loader
+
     const passengers = this.form.value.passengers;
     const body = {
-      user_id: '222',
+      user_id: userId,
       flight_id: flight.id,
       passengers: passengers,
       travel_class: this.form.value.classType,
@@ -64,11 +81,19 @@ export class SearchFlightsComponent implements OnInit {
     };
 
     this.http.post('http://localhost:3005/api/flight/book', body).subscribe({
-      next: () => alert('Flight booked successfully!'),
+      next: () => {
+        this.loading = false; // Hide loader
+        alert('Flight booked successfully!');
+      },
       error: (err) => {
+        this.loading = false; // Hide loader
         console.error('Booking failed:', err);
         alert('Booking failed');
       },
     });
+  } else {
+    this.router.navigate(['/auth']);
   }
+}
+
 }
