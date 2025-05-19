@@ -29,7 +29,7 @@ async function handleUserRegistration(req, res) {
 
         //Generate and store verification code in Redis (TTL: 5 min)
         const code = Math.floor(100000 + Math.random() * 900000).toString();
-        await client.setEx(`verify:${email}`, 300, code);
+        await client.setex(`verify:${email}`, 300, code);
 
         // Send verification email
         await transporter.sendMail({

@@ -71,6 +71,10 @@ export class SearchFlightsComponent implements OnInit {
     this.loading = true; // Show loader
 
     const passengers = this.form.value.passengers;
+    if (!passengers || passengers < 1) {
+    alert('Number of passengers must be at least 1.');
+    return;
+  }
     const body = {
       user_id: userId,
       flight_id: flight.id,
