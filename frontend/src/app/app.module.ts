@@ -11,6 +11,7 @@ import { VerifyEmailComponent } from './auth/verify-email/verify-email.component
 
 import { AuthComponent } from './auth/auth/auth.component';
 import { NavBarComponent } from './nav/nav-bar/nav-bar.component';
+import { BoardingPassComponent } from './flight/boarding-pass/boarding-pass.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { NavBarComponent } from './nav/nav-bar/nav-bar.component';
     SearchFlightsComponent,
     VerifyEmailComponent,
     AuthComponent,
-    NavBarComponent
+    NavBarComponent,
+    BoardingPassComponent
   ],
   imports: [
     BrowserModule,

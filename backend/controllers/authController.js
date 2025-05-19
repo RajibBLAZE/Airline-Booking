@@ -65,7 +65,7 @@ async function handleVerifyEmail(req, res){
             });
         }
         res.status(400).json({ message: 'Invalid or expired code' });
-    } catch (error) {
+    } catch (err) {
         console.error('Verify Email Error:', err);
         res.status(500).json({ message: 'Internal server error' });
     }

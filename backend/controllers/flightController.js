@@ -1,6 +1,6 @@
 const db = require('../db');
 const client = require('../utils/client');
-
+const User = require('../models/userModel');
 const crypto = require('crypto');
 
 
@@ -45,7 +45,7 @@ async function searchFlights(req, res) {
             query += ' AND f.airline = ?';
             params.push(airline);
         }
-        if (minPrice != null && maxPrice != null){
+        if (minPrice != null && maxPrice != null) {
             query += ' AND f.price BETWEEN ? AND ?';
             params.push(minPrice, maxPrice);
         }
@@ -102,7 +102,7 @@ async function deleteFlight(req, res) {
         const { id } = req.params;
         await db.query(`DELETE FROM flights WHERE id = ?`, [id]);
         res.status(202).json({ message: 'Flight deleted' });
-    } catch (error) {
+    } catch (err) {
         console.error('Delete flight Error:', err);
         res.status(500).json({ message: 'Internal server error' });
     }
@@ -121,11 +121,58 @@ async function getRevenue(req, res) {
     }
 }
 
+async function getBoardingPass(req, res) {
+    const userId = req.params.userId;
+    try {
+        const user = await User.findById({ _id: userId });
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        const [bookingRow] = await db.query(
+            `SELECT b.*, f.*, 
+              fc.name AS from_city, 
+              tc.name AS to_city 
+                FROM bookings b
+                JOIN flights f ON b.flight_id = f.id
+                JOIN cities fc ON f.from_city_id = fc.id
+                JOIN cities tc ON f.to_city_id = tc.id
+                WHERE b.user_id = ?
+                ORDER BY b.created_at DESC `,
+            [userId]
+        );
+        if (!bookingRow.length) return res.status(404).json({ message: 'No booking found' });
+
+        const boardingPasses = bookingRow.map(booking => ({
+            name: user.username,
+            booking: {
+                flightNumber: booking.id,
+                from: booking.from_city,
+                to: booking.to_city,
+                departureTime: booking.departure_time,
+                arrivalTime: booking.arrival_time,
+                duration: booking.duration,
+                date: booking.date,
+                class: booking.travel_class,
+                fareType: booking.fare_type,
+                seat: '28A', // You can randomize or fetch seat data if stored
+                gate: '11',
+                ticketNumber: `TK${booking.id.toString().padStart(8, '0')}`
+            }
+        }));
+
+        res.json(boardingPasses);
+
+    } catch (err) {
+        console.error('Error fetching boarding pass:', err);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
 module.exports = {
     getCities,
     bookFlight,
     searchFlights,
     addFlight,
     deleteFlight,
-    getRevenue
+    getRevenue,
+    getBoardingPass
 }

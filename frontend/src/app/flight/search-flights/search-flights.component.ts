@@ -83,7 +83,8 @@ export class SearchFlightsComponent implements OnInit {
     this.http.post('http://localhost:3005/api/flight/book', body).subscribe({
       next: () => {
         this.loading = false; // Hide loader
-        alert('Flight booked successfully!');
+        // alert('Flight booked successfully!');
+        this.router.navigate([`/boarding-pass/${userId}`]);
       },
       error: (err) => {
         this.loading = false; // Hide loader

@@ -3,9 +3,15 @@
     <!-- Left: Branding -->
     <a class="navbar-brand text-primary fw-bold" href="#">Flywithus.com</a>
 
-    <!-- Right: Login Button -->
+    <!-- Right: Auth Buttons -->
     <div class="d-flex ms-auto">
-      <a class="btn btn-outline-primary" routerLink="/auth">Login</a>
+      <ng-container *ngIf="!isLoggedIn; else logoutBtn">
+        <a class="btn btn-outline-primary" routerLink="/auth">Login</a>
+      </ng-container>
+
+      <ng-template #logoutBtn>
+        <button class="btn btn-outline-danger" (click)="logout()">Logout</button>
+      </ng-template>
     </div>
   </div>
 </nav>
