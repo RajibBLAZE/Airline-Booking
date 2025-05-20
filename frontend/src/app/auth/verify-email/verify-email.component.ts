@@ -16,13 +16,14 @@ export class VerifyEmailComponent {
   }
 
   verify() {
+    // get the email stored in the localstorage
     const email = localStorage.getItem('email');
     if (!email) {
       this.error = 'No email found for verification.';
       return;
     }
-
-    this.authService.verifyCode(email, this.code).subscribe({
+    // calling the verifycode service
+    this.authService.verifyCode (email, this.code).subscribe({
       next: () => {
         this.message = 'Email verified successfully. Please log in.';
         localStorage.removeItem('email');

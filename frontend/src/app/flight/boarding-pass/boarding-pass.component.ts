@@ -25,6 +25,7 @@ interface BoardingPass {
   styleUrls: ['./boarding-pass.component.css']
 })
 export class BoardingPassComponent implements OnInit {
+  // to store array of boarding pass
   boardingPasses: BoardingPass[] = [];
   loading = true;
   errorMessage = '';
@@ -35,6 +36,7 @@ export class BoardingPassComponent implements OnInit {
     // Get userId from route params
     const userId = this.route.snapshot.paramMap.get('userId');
     if (userId) {
+      //to laod the loader for 1.5 sec
       setTimeout(() =>{
         this.fetchBoardingPass(userId);
       },1500);

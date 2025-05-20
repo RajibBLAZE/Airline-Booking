@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon app",
-    "test": "mocha --require esm"
+    "test": "mocha"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +13,8 @@
   "dependencies": {
     "bcrypt": "^6.0.0",
     "body-parser": "^2.2.0",
+    "chai": "^4.3.7",
+    "chai-http": "^4.3.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^16.5.0",
@@ -20,9 +22,12 @@
     "ioredis": "^5.6.1",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
+    "mocha": "^11.2.2",
     "mongoose": "^8.14.3",
     "mysql2": "^3.14.1",
     "nodemailer": "^7.0.3",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "sinon": "^20.0.0",
+    "supertest": "^7.1.1"
   }
 }

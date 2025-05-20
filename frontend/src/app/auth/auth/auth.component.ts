@@ -35,15 +35,15 @@ export class AuthComponent implements OnInit {
   submit() {
     const data = this.authForm.value;
     const email = this.authForm.value.email;
-     
+     // check if isLogin or not 
     if (this.isLogin) {
       this.authService.login(data).subscribe({
         next: (res: any) => {
           this.message = 'Login Successful!';
+          // token is saved in localstorage
           this.authService.saveToken(res.token);
           this.showSuccessGif = true;
           setTimeout(() =>{
-            
             this.router.navigate(['/flight']);
           },1500)
         },
