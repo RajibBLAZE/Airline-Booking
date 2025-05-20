@@ -17,10 +17,10 @@ describe('Auth Routes', () => {
     });
 
     it('should register a new user', async () => {
-        sinon.stub(User, 'findOne').resolves(null);
-        sinon.stub(User, 'create').resolves({ email, username: 'testuser' });
-        sinon.stub(client, 'setex').resolves();
-        sinon.stub(mailer, 'sendMail').resolves();
+        sinon.stub(User, 'findOne').resolves(null); // check in the DB for the user
+        sinon.stub(User, 'create').resolves({ email, username: 'testuser' });  // create a user
+        sinon.stub(client, 'setex').resolves(); // set the client
+        sinon.stub(mailer, 'sendMail').resolves();// send mailer
 
         const res = await chai.request(app).post('/api/auth/register').send({
             username: 'testuser',
@@ -35,9 +35,9 @@ describe('Auth Routes', () => {
     });
 
     it('should verify email with correct code', async () => {
-        sinon.stub(client, 'get').resolves('123456');
-        sinon.stub(User, 'updateOne').resolves({ acknowledged: true });
-        sinon.stub(client, 'del').resolves();
+        sinon.stub(client, 'get').resolves('123456'); // get the code from client
+        sinon.stub(User, 'updateOne').resolves({ acknowledged: true }); // update the DB 
+        sinon.stub(client, 'del').resolves(); // del the code from redis
 
         const res = await chai.request(app).post('/api/auth/verify').send({
             email,

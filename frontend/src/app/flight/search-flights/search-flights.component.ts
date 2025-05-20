@@ -38,7 +38,7 @@ export class SearchFlightsComponent implements OnInit {
       passengers: [1, [Validators.required, Validators.min(1)]],
     });
   }
-
+  // initialize when loaded
   ngOnInit() {
 
     this.http

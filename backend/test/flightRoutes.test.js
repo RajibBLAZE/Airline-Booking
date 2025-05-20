@@ -107,7 +107,7 @@ describe('Flight Routes and Controller', () => {
   });
 
   // GET /boarding-pass/:userId
-  it('should get a user\'s boarding pass', async () => {
+  it('should get a users boarding pass', async () => {
     const userId = 'abc123';
     const mockUser = { _id: userId, username: 'Test User' };
     const mockBookings = [

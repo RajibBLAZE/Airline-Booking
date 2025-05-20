@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const transporter = require('../utils/mailer');
 require('dotenv').config();
-
+// new user registration
 async function handleUserRegistration(req, res) {
     try {
         const { username, email, phone, password, isStudent } = req.body;
@@ -49,13 +49,15 @@ async function handleUserRegistration(req, res) {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
-
+// after registration verification code is sent the email to  verify
 async function handleVerifyEmail(req, res){
     try {
         const {email, code} = req.body;
+        // get the code from redis
         const stored = await client.get(`verify:${email}`);
 
         if( stored === code){
+            //if yes then update the Db
             await User.updateOne({email}, { $set: {
                 isEmailVerified: true
             }});
@@ -70,7 +72,7 @@ async function handleVerifyEmail(req, res){
         res.status(500).json({ message: 'Internal server error' });
     }
 };
-
+// user login proccess
 async function handleLoginUser(req, res){
     const {email, password} = req.body;
     const user = await User.findOne({ email });

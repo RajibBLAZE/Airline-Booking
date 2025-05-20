@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
+
+// Admin login
 async function loginAdmin(req, res) {
     const { adminId, password } = req.body;
   if (adminId === process.env.ADMIN_ID && password === process.env.ADMIN_PASS) {
