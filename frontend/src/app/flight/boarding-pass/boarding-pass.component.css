@@ -1,0 +1,16 @@
+.card {
+  border-radius: 15px;
+}
+.bg-light {
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+.plane-loader {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.plane-loader img {
+  width: 400px;
+  height: auto;
+}

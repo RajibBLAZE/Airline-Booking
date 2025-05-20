@@ -3,14 +3,32 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { SearchFlightsComponent } from './flight/search-flights/search-flights.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+
+import { VerifyEmailComponent } from './auth/verify-email/verify-email.component';
+
+import { AuthComponent } from './auth/auth/auth.component';
+import { NavBarComponent } from './nav/nav-bar/nav-bar.component';
+import { BoardingPassComponent } from './flight/boarding-pass/boarding-pass.component';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SearchFlightsComponent,
+    VerifyEmailComponent,
+    AuthComponent,
+    NavBarComponent,
+    BoardingPassComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

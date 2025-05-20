@@ -1,0 +1,357 @@
+<!-- Centered container for pre-search -->
+
+
+<div
+  *ngIf="!submitted "
+  
+  class="d-flex justify-content-center align-items-center vh-100"
+>
+
+  <form
+    [formGroup]="form"
+    (ngSubmit)="onSearch()"
+    class="p-4 border rounded bg-light"
+    style="width: 100%; max-width: 900px"
+  >
+      <h1>Search Flight</h1>
+    <!-- Main form content -->
+     
+    <div class="row">
+      <!-- A1: Search Inputs -->
+      <div class="col-md-12">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="from" class="form-label">From</label>
+            <select formControlName="from" id="from" class="form-select">
+              <option value="">Select city</option>
+              <option *ngFor="let city of cities" [value]="city.id">
+                {{ city.name }}
+              </option>
+            </select>
+            <div
+              *ngIf="submitted && form.get('from')?.hasError('required')"
+              class="text-danger mt-1"
+            >
+              From is required
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="to" class="form-label">To</label>
+            <select formControlName="to" id="to" class="form-select">
+              <option value="">Select city</option>
+              <option *ngFor="let city of cities" [value]="city.id">
+                {{ city.name }}
+              </option>
+            </select>
+            <div
+              *ngIf="submitted && form.get('to')?.hasError('required')"
+              class="text-danger mt-1"
+            >
+              To is required
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label for="date" class="form-label">Departure Date</label>
+            <input
+              type="date"
+              formControlName="date"
+              id="date"
+              class="form-control"
+            />
+            <div
+              *ngIf="submitted && form.get('date')?.hasError('required')"
+              class="text-danger mt-1"
+            >
+              Date is required
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label for="classType" class="form-label">Class</label>
+            <select
+              formControlName="classType"
+              id="classType"
+              class="form-select"
+            >
+              <option value="economy">Economy</option>
+              <option value="premium">Premium</option>
+              <option value="business">Business</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label for="passengers" class="form-label">Passengers</label>
+            <input
+              type="number"
+              formControlName="passengers"
+              id="passengers"
+              min="1"
+              class="form-control"
+            />
+            <div
+              *ngIf="submitted && form.get('passengers')?.hasError('min')"
+              class="text-danger mt-1"
+            >
+              Minimum 1 passenger
+            </div>
+            <div
+              *ngIf="submitted && form.get('passengers')?.hasError('required')"
+              class="text-danger mt-1"
+            >
+              Passengers is required
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Fare Type</label><br />
+          <div
+            class="form-check form-check-inline"
+            *ngFor="let type of ['regular', 'student']"
+          >
+            <input
+              class="form-check-input"
+              type="radio"
+              [value]="type"
+              formControlName="fareType"
+              [id]="type"
+            />
+            <label class="form-check-label" [for]="type">{{
+              type | titlecase
+            }}</label>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">
+          Search Flights
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- After search: filters + results layout -->
+<div *ngIf="submitted" class="container mt-4">
+  <form
+    [formGroup]="form"
+    (ngSubmit)="onSearch()"
+    class="p-4 border rounded bg-light"
+  >
+    <div class="row">
+      <!-- A1: Inputs -->
+      <div class="col-md-9">
+        <div class="col-md-9">
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="from" class="form-label">From</label>
+              <select formControlName="from" id="from" class="form-select">
+                <option value="">Select city</option>
+                <option *ngFor="let city of cities" [value]="city.id">
+                  {{ city.name }}
+                </option>
+              </select>
+              <div
+                *ngIf="submitted && form.get('from')?.hasError('required')"
+                class="text-danger mt-1"
+              >
+                From is required
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="to" class="form-label">To</label>
+              <select formControlName="to" id="to" class="form-select">
+                <option value="">Select city</option>
+                <option *ngFor="let city of cities" [value]="city.id">
+                  {{ city.name }}
+                </option>
+              </select>
+              <div
+                *ngIf="submitted && form.get('to')?.hasError('required')"
+                class="text-danger mt-1"
+              >
+                To is required
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label for="date" class="form-label">Departure Date</label>
+              <input
+                type="date"
+                formControlName="date"
+                id="date"
+                class="form-control"
+              />
+              <div
+                *ngIf="submitted && form.get('date')?.hasError('required')"
+                class="text-danger mt-1"
+              >
+                Date is required
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <label for="classType" class="form-label">Class</label>
+              <select
+                formControlName="classType"
+                id="classType"
+                class="form-select"
+              >
+                <option value="economy">Economy</option>
+                <option value="premium">Premium</option>
+                <option value="business">Business</option>
+              </select>
+            </div>
+
+            <div class="col-md-4">
+              <label for="passengers" class="form-label">Passengers</label>
+              <input
+                type="number"
+                formControlName="passengers"
+                id="passengers"
+                min="1"
+                class="form-control"
+              />
+              <div
+                *ngIf="submitted && form.get('passengers')?.hasError('min')"
+                class="text-danger mt-1"
+              >
+                Minimum 1 passenger
+              </div>
+              <div
+                *ngIf="
+                  submitted && form.get('passengers')?.hasError('required')
+                "
+                class="text-danger mt-1"
+              >
+                Passengers is required
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Fare Type</label><br />
+            <div
+              class="form-check form-check-inline"
+              *ngFor="let type of ['regular', 'student']"
+            >
+              <input
+                class="form-check-input"
+                type="radio"
+                [value]="type"
+                formControlName="fareType"
+                [id]="type"
+              />
+              <label class="form-check-label" [for]="type">
+                {{ type | titlecase }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- A2: Filters -->
+      <div class="col-md-3" *ngIf="showFilters">
+        <div class="border p-3 bg-white rounded shadow-sm">
+          <h6 class="mb-3">Filters</h6>
+          <div class="mb-3">
+            <label class="form-label">Airline</label>
+            <select formControlName="airline" class="form-select">
+              <option value="">-- Any --</option>
+              <option value="IndiGo">IndiGo</option>
+              <option value="Air India">Air India</option>
+              <option value="Akasa Air">Akasa Air</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Departure Time</label>
+            <select formControlName="timeSlot" class="form-select">
+              <option value="">-- Any --</option>
+              <option value="morning">Morning (6AM - 12PM)</option>
+              <option value="afternoon">Afternoon (12PM - 6PM)</option>
+              <option value="evening">Evening (6PM - 12AM)</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Min Price (₹)</label>
+            <input
+              type="number"
+              formControlName="minPrice"
+              class="form-control"
+              placeholder="Min"
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Max Price (₹)</label>
+            <input
+              type="number"
+              formControlName="maxPrice"
+              class="form-control"
+              placeholder="Max"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search Again -->
+    <div class="row mt-4">
+      <div class="col text-end">
+        <button type="submit" class="btn btn-primary w-100">
+          Search Flights
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <!-- A3: Results -->
+  <div *ngIf="flights.length > 0" class="mt-5">
+    <h3>Flights Results</h3>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <div class="col" *ngFor="let f of flights">
+        <div class="card h-100 shadow-sm border border-primary">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h5 class="card-title mb-0 text-primary">{{ f.airline }}</h5>
+              <span class="badge bg-info text-dark text-capitalize">{{
+                f.class
+              }}</span>
+            </div>
+            <div class="mb-2">
+              <strong>{{ f.from_city }}</strong> →
+              <strong>{{ f.to_city }}</strong>
+            </div>
+            <div class="mb-2">
+              <i class="bi bi-clock"></i> {{ f.departure_time }} –
+              {{ f.arrival_time }}
+              <span class="text-muted">({{ f.duration }})</span>
+            </div>
+            <div class="mb-2">
+              <i class="bi bi-currency-rupee"></i> ₹{{ f.price }}
+              <small class="text-muted">per adult</small>
+            </div>
+            <div class="mb-2">
+              <span class="badge bg-secondary"
+                >{{ f.fare_type | titlecase }} Fare</span
+              >
+            </div>
+            <div class="mb-3 text-muted">
+              Date: {{ f.date | date : "fullDate" }}
+            </div>
+            <button class="btn btn-success w-100" (click)="bookFlight(f)">
+              Book Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Results -->
+  <div *ngIf="flights.length === 0" class="alert alert-warning mt-4">
+    No flights found for the selected criteria.
+  </div>
+</div>

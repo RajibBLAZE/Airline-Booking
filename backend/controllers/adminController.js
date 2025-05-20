@@ -1,4 +1,4 @@
-
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 async function loginAdmin(req, res) {
     const { adminId, password } = req.body;

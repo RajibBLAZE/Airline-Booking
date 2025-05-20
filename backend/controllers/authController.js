@@ -5,11 +5,20 @@ const jwt = require('jsonwebtoken');
 const transporter = require('../utils/mailer');
 require('dotenv').config();
 
-async function handleUserRegistration(req, res){
+async function handleUserRegistration(req, res) {
     try {
         const { username, email, phone, password, isStudent } = req.body;
+
+        //  Check if user already exists
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ message: 'Email already registered' });
+        }
+
+        // Hash the password
         const hashed = await bcrypt.hash(password, 10);
 
+        //  Create the user
         const user = await User.create({
             username,
             email,
@@ -18,23 +27,28 @@ async function handleUserRegistration(req, res){
             isStudent
         });
 
+        //Generate and store verification code in Redis (TTL: 5 min)
         const code = Math.floor(100000 + Math.random() * 900000).toString();
-        await client.setex(`verify:${email}`, 300, code);
+        await client.setEx(`verify:${email}`, 300, code);
 
+        // Send verification email
         await transporter.sendMail({
             from: process.env.EMAIL_USER,
             to: email,
             subject: 'Verify your email',
             text: `Your verification code is: ${code}`,
         });
+
+        // Respond success
         res.status(201).json({
-            message: 'User created successfully. Check email for verification code .'
+            message: 'User created successfully. Check email for verification code.'
         });
+
     } catch (err) {
-       console.error('Register Error:', err);
-        res.status(500).json({ message: 'Internal server error' }); 
+        console.error('Register Error:', err);
+        res.status(500).json({ message: 'Internal server error' });
     }
-};
+}
 
 async function handleVerifyEmail(req, res){
     try {
@@ -51,7 +65,7 @@ async function handleVerifyEmail(req, res){
             });
         }
         res.status(400).json({ message: 'Invalid or expired code' });
-    } catch (error) {
+    } catch (err) {
         console.error('Verify Email Error:', err);
         res.status(500).json({ message: 'Internal server error' });
     }

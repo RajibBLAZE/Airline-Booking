@@ -1,0 +1,37 @@
+<div *ngIf="loading" class="plane-loader" >
+    <img src="assets/booking-loader.gif" alt="Loading animation" />
+
+</div>
+
+
+<div *ngIf="errorMessage" class="alert alert-danger text-center mt-3">
+  {{ errorMessage }}
+</div>
+
+<div *ngIf="boardingPasses.length" class="card shadow-lg mx-auto mt-5" style="max-width: 900px;">
+  <div *ngFor="let pass of boardingPasses; let last = last" >
+    <div class="row g-0">
+      <div class="col-md-5 bg-light text-center d-flex flex-column justify-content-center">
+      <h4 class="text-primary mt-4">Boarding Pass</h4>
+      <h5 class="mb-4">{{ pass.name }}</h5>
+      <p><strong>Seat:</strong> {{ pass.booking.seat }}</p>
+      <p><strong>Gate:</strong> {{ pass.booking.gate }}</p>
+      <p><strong>Ticket #:</strong> {{ pass.booking.ticketNumber }}</p>
+    </div>
+
+    <div class="col-md-7 p-4">
+      <p><strong>Flight Number:</strong> {{ pass.booking.flightNumber }}</p>
+      <p><strong>From:</strong> {{ pass.booking.from }}</p>
+      <p><strong>To:</strong> {{ pass.booking.to }}</p>
+      <p><strong>Departure:</strong> {{ pass.booking.departureTime }}</p>
+      <p><strong>Arrival:</strong> {{ pass.booking.arrivalTime }}</p>
+      <p><strong>Date:</strong> {{ pass.booking.date | date: 'longDate' }}</p>
+      <p><strong>Class:</strong> {{ pass.booking.class }}</p>
+      <p><strong>Fare Type:</strong> {{ pass.booking.fareType }}</p>
+    </div>
+    <hr *ngIf="!last" class="my-4 border border-secondary-subtle w-75 mx-auto" />
+
+    </div>
+    
+  </div>
+</div>
